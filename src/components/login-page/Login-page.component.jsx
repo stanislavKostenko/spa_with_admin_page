@@ -13,15 +13,19 @@ import { api } from '../api';
 
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { updateEmail } from '../../redux/actions/login-actions';
-
+import {
+  emailFailed, emailSuccess,
+  formValidationFailed,
+  formValidationSuccess,
+  passwordFailed, passwordSuccess,
+  updateEmail,
+  updatePassword
+} from '../../redux/actions/login-actions';
 
 
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-    this.login = this.props.login;
-
 
 
     this.onSubmitRegistration = this.onSubmitRegistration.bind(this);
@@ -31,31 +35,17 @@ class LoginPage extends React.Component {
     this.updateRegistration = this.props.updateRegistration;
     this.updateLogin = this.props.updateLogin;
     this.updateAdmin = this.props.updateAdmin;
-    this.state = {
-      active: false,
-      users: [],
-      email: '',
-      password: '',
-      formsErrors: {
-        email: true,
-        password: '',
-        emailIsError: false,
-        passwordIsError: false
-      },
-      emailIsValid: '',
-      passwordIsValid: false,
-      formIsValid: true,
-      signIn: this.props.signIn,
-      signUp: this.props.signUp,
-      isAdmin: this.props.isAdmin,
-
-    };
   }
 
   handleUserFields(event) {
+    debugger;
     const name = event.target.name;
     const value = event.target.value;
-    this.setState({ [name]: value });
+    if (name === 'email') {
+      this.props.updateEmailActions(value);
+    } else if (name === 'password') {
+      this.props.updatePasswordActions(value);
+    }
     this.validateFields(name, value)
   }
 
@@ -63,77 +53,69 @@ class LoginPage extends React.Component {
     this.handleUserFields(e);
   }
 
-  loginValidation() {
-    if (this.state.email === 'admin9999@gmail.com' && this.state.password === 'admin9999') {
-      this.updateAdmin();
-    }
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    };
-    api.loginValidation(userData)
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'success') {
-        this.setState({
-          email: '',
-          password: '',
-          formIsValid: true
-        });
-        this.updateLogin();
-        this.updateRegistration();
-        this.returnToMainPage();
-      } else {
-        this.setState({
-          formIsValid: false
-        });
-      }
-    });
+  successValidation() {
+    let empty = '';
+    this.props.updateEmailActions(empty);
+    this.props.updatePasswordActions(empty);
+    this.updateLogin();
+    this.updateRegistration();
+    this.props.formValidationSuccessActions();
+    this.returnToMainPage();
   }
 
-  registrationValidation() {
-    const userData = {
-      email: this.state.email,
-      password: this.state.password
-    };
+  loginValidation(userData) {
+    api.loginValidation(userData)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          this.successValidation();
+        } else {
+          this.props.formValidationFailedActions();
+        }
+      });
+  }
+
+  registrationValidation(userData) {
     api.registrationValidation(userData)
-    .then((res)=>{
-      return res.json();
-    }).then(data => {
+      .then((res) => {
+        return res.json();
+      }).then(data => {
       debugger;
       console.log(data);
       if (data.status === 'success') {
-        this.setState({
-          email: '',
-          password: '',
-          formIsValid: true
-        });
-        this.updateLogin();
-        this.updateRegistration();
-        this.returnToMainPage();
+        this.successValidation();
       } else {
-        this.setState({
-          formIsValid: false
-        });
+        this.props.formValidationFailedActions();
       }
     });
   }
 
   keyPress(e) {
     const isEnter = e.keyCode === 10 || e.keyCode === 13;
-    if(isEnter && this.state.signIn) {
+    if (isEnter && this.props.signIn) {
       this.onSubmitLogin();
-    } else if(isEnter) {
+    } else if (isEnter) {
       this.onSubmitRegistration()
     }
   }
 
   onSubmitRegistration() {
-    this.registrationValidation();
+    const userData = {
+      email: this.props.login.email,
+      password: this.props.login.password
+    };
+    this.registrationValidation(userData);
   }
 
   onSubmitLogin() {
-    this.loginValidation();
+    if (this.props.login.email === 'admin9999@gmail.com' && this.props.login.password === 'admin9999') {
+      this.updateAdmin();
+    }
+    const userData = {
+      email: this.props.login.email,
+      password: this.props.login.password
+    };
+    this.loginValidation(userData);
   }
 
   returnToMainPage() {
@@ -141,56 +123,31 @@ class LoginPage extends React.Component {
   }
 
   validateFields(fieldName, value) {
-    let fieldValidationErrors = this.state.formsErrors;
-    let emailIsValid = this.state.emailIsValid;
-    let passwordIsValid = this.state.passwordIsValid;
+    debugger;
+    let emailIsValid = this.props.login.emailIsValid;
+    let passwordIsValid = this.props.login.passwordIsValid;
 
     switch (fieldName) {
       case 'email':
         emailIsValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
         if (emailIsValid === null || emailIsValid.length !== 4) {
-          this.setState({
-            formsErrors: {
-              emailIsError: true
-            }
-          })
+          this.props.emailFailedActions();
         } else {
-          this.setState({
-            formsErrors: {
-              emailIsError: false
-            }
-          })
+          this.props.emailSuccessActions();
         }
         break;
       case 'password':
         passwordIsValid = value.length >= 6;
-        if (!passwordIsValid) {
-          this.setState({
-            formsErrors: {
-              passwordIsError: true
-            }
-          })
-        } else {
-          this.setState({
-            formsErrors: {
-              passwordIsError: false
-            }
-          })
-        }
+        !passwordIsValid ? this.props.passwordFailedActions() : this.props.passwordSuccessActions();
         break;
       default:
         break;
     }
-    this.setState({
-      formErrors: fieldValidationErrors,
-      emailIsValid: emailIsValid,
-      passwordIsValid: passwordIsValid
-    })
   }
 
   render() {
-    const { signIn, signUp } = this.props;
-    const emptyString = this.state.email === '' && this.state.password === '';
+    const { signIn, signUp, login } = this.props;
+    const emptyString = login.email === '' && login.password === '';
     return (
       <div className="login-page">
         <Card classes={ { root: 'login-page__card' } }>
@@ -213,20 +170,20 @@ class LoginPage extends React.Component {
               <TextField
                 fullWidth={ true }
                 type="email"
-                label={ !this.state.formIsValid ? 'Account with this email already exists' : 'Email' }
+                label={ login.formIsValid ? 'Account with this email already exists' : 'Email' }
                 name="email"
-                value={ this.state.email }
+                value={ login.email }
                 onChange={ this.onChangeHandler }
-                error={ this.state.formsErrors.emailIsError || !this.state.formIsValid }
+                error={ login.emailIsError || login.formIsValid }
               />
               <TextField
                 fullWidth={ true }
                 type="password"
-                label={ this.state.formsErrors.passwordIsError ? 'A password should be more than 5 symbols' : 'Password' }
+                label={ login.passwordIsError ? 'A password should be more than 5 symbols' : 'Password' }
                 name="password"
-                value={ this.state.password }
+                value={ login.password }
                 onChange={ this.onChangeHandler }
-                error={ this.state.formsErrors.passwordIsError }
+                error={ login.passwordIsError }
                 onKeyDown={ this.keyPress }
               />
             </form>
@@ -242,7 +199,7 @@ class LoginPage extends React.Component {
               classes={ { root: 'login-page__card__submit' } }
               fullWidth={ true }
               variant="contained"
-              disabled={ this.state.formsErrors.emailIsError || this.state.formsErrors.passwordIsError ||
+              disabled={ login.emailIsError || login.passwordIsError ||
               emptyString }
             >
               { signIn ? 'Sign In' : 'Sign Up' }
@@ -260,7 +217,14 @@ LoginPage.propTypes = {
   updateRegistration: PropTypes.func.isRequired,
   updateLogin: PropTypes.func.isRequired,
   updateAdmin: PropTypes.func.isRequired,
-  updateEmailActions: PropTypes.func.isRequired
+  updateEmailActions: PropTypes.func.isRequired,
+  updatePasswordActions: PropTypes.func.isRequired,
+  formValidationSuccessActions: PropTypes.func.isRequired,
+  formValidationFailedActions: PropTypes.func.isRequired,
+  emailSuccessActions: PropTypes.func.isRequired,
+  emailFailedActions: PropTypes.func.isRequired,
+  passwordSuccessActions: PropTypes.func.isRequired,
+  passwordFailedActions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = store => {
@@ -272,7 +236,14 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
   return {
     updateEmailActions: email => dispatch(updateEmail(email)),
+    updatePasswordActions: password => dispatch(updatePassword(password)),
+    formValidationSuccessActions: () => dispatch(formValidationSuccess()),
+    formValidationFailedActions: () => dispatch(formValidationFailed()),
+    emailSuccessActions: () => dispatch(emailSuccess()),
+    passwordSuccessActions: () => dispatch(passwordSuccess()),
+    emailFailedActions: () => dispatch(emailFailed()),
+    passwordFailedActions: () => dispatch(passwordFailed())
   }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));

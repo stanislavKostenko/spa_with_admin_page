@@ -4,7 +4,7 @@ import { HashRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 
-import { NavBarComponent } from './nav-bar/Nav-bar.component';
+import NavBarComponent from './nav-bar/Nav-bar.component';
 import LoginPage from './login-page/Login-page.component';
 import { HomePageComponent } from './home-page/Home-page.component';
 import { AdminPageComponent } from './admin-page/Admin-page.component';

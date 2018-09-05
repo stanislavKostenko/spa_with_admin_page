@@ -7,26 +7,29 @@ const initialState = {
   },
   emailIsValid: '',
   passwordIsValid: false,
-  formIsValid: true,
+  formIsValid: false,
 };
 
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'UPDATE_EMAIL':
-      debugger
       return { ...state, email: action.payload };
-    // case CHANGED_PASSWORD:
-    //   return { ...state, password: action.payload };
-    // case ADMIN_LOGGED_IN:
-    //   return { ...state, isAdmin: true };
-    // case USER_LOGGED_OUT:
-    //   return { ...state, isAdmin: false, isLoggedIn: false, isRegistered: false};
-    // case USER_IS_REGISTERED:
-    //   return { ...state, isRegistered: true, isLoggedIn: true };
-    // case USER_IS_LOGGED_IN:
-    //   return { ...state, isLoggedIn: true };
+    case 'UPDATE_PASSWORD':
+      return { ...state, password: action.payload };
+    case 'FORM_VALIDATION_SUCCESS':
+      return { ...state, formIsValid: true };
+    case 'FORM_VALIDATION_FAILED':
+      return { ...state, formIsValid: false};
+    case 'EMAIL_SUCCESS':
+      return { ...state, emailIsError: false };
+    case 'EMAIL_FAILED':
+      return { ...state, emailIsError: true };
+    case 'PASSWORD_SUCCESS':
+      return { ...state, passwordIsError: false };
+    case 'PASSWORD_FAILED':
+      return { ...state, passwordIsError: true };
 
     default:
       return state
   }
-}
+};

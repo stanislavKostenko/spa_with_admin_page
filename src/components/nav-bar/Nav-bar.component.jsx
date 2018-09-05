@@ -5,8 +5,10 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/es/Toolbar/Toolbar';
 import Button from '@material-ui/core/es/Button/Button';
 import PropTypes from 'prop-types'
+import { formValidationFailed } from '../../redux/actions/login-actions';
+import { connect } from 'react-redux';
 
-export class NavBarComponent extends React.Component {
+class NavBarComponent extends React.Component {
 
 
   renderUserView(isAdmin) {
@@ -32,13 +34,13 @@ export class NavBarComponent extends React.Component {
       return (
         <div className="nav-bar__button_login">
           <Link
-            onClick={ () => updateSignIn() }
+            onClick={ () => {updateSignIn(); this.props.formValidationFailedActions()} }
             className="nav-bar__button"
             to={ '/login' }>
             <Button color="inherit">Sign In</Button>
           </Link>
           <Link
-            onClick={ () => updateSignUp() }
+            onClick={ () => {updateSignUp(); this.props.formValidationFailedActions()} }
             className="nav-bar__button"
             to={ '/registration' }>
             <Button color="inherit">Sign Up</Button>
@@ -76,4 +78,13 @@ NavBarComponent.propTypes = {
   updateSignIn: PropTypes.func.isRequired,
   updateSignUp: PropTypes.func.isRequired,
   loggedOut: PropTypes.func.isRequired
-}
+};
+
+const mapDispatchToProps = dispatch => {
+  debugger;
+  return {
+    formValidationFailedActions: () => dispatch(formValidationFailed()),
+  }
+};
+
+export default connect(null, mapDispatchToProps)(NavBarComponent);
