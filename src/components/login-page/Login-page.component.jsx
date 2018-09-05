@@ -214,14 +214,6 @@ LoginPage.propTypes = {
   updateRegistration: PropTypes.func.isRequired,
   updateLogin: PropTypes.func.isRequired,
   updateAdmin: PropTypes.func.isRequired,
-  updateEmailActions: PropTypes.func.isRequired,
-  updatePasswordActions: PropTypes.func.isRequired,
-  formValidationSuccessActions: PropTypes.func.isRequired,
-  formValidationFailedActions: PropTypes.func.isRequired,
-  emailSuccessActions: PropTypes.func.isRequired,
-  emailFailedActions: PropTypes.func.isRequired,
-  passwordSuccessActions: PropTypes.func.isRequired,
-  passwordFailedActions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = store => {

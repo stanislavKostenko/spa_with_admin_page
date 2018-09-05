@@ -84,7 +84,7 @@ export class UserComponent extends React.Component {
     }
   }
 
-  inputSwitch(editable , emailIsError, passwordIsError) {
+  inputSwitch(editable , emailIsError, passwordIsError, isAdmin) {
     if (editable) {
       return (
         <CardContent className="user__card__content">
@@ -96,7 +96,8 @@ export class UserComponent extends React.Component {
             name="email"
             onChange={ this.onChangeHandler }
             value={ this.state.email }
-            error={ emailIsError }/>
+            error={ emailIsError }
+            disabled={isAdmin}/>
           <TextField
             fullWidth={ true }
             type="string"
@@ -121,29 +122,29 @@ export class UserComponent extends React.Component {
     }
   }
 
-  editableSwitch(id) {
+  editableSwitch(id, data) {
     const { editable, email, password} = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
     if (editable) {
-      this.props.updateUser(id, email, password, passwordIsError, emailIsError);
+      this.props.updateUser(id, data, email, password, passwordIsError, emailIsError);
     }
     this.editableUser();
   }
 
   render() {
-    const { email, password, _id, updateUser, deleteUser } = this.props;
+    const { email, password, _id, deleteUser, data } = this.props;
     const { editable } = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
-    const isAdmin = '5b8d3ec830de9e0be86e0c83' === _id;
+    const isAdmin = 'admin9999@gmail.com' === email;
     return (
       <div className="user">
         <Card className="user__card">
-          {this.inputSwitch(editable, emailIsError, passwordIsError)}
+          {this.inputSwitch(editable, emailIsError, passwordIsError, isAdmin)}
           <CardActions className="user__card__actions">
               <Button className="user__card__actions__button"
                       variant="contained"
                       color="primary"
-                      onClick={ () => {this.editableSwitch(_id)} }
+                      onClick={ () => {this.editableSwitch(_id, data)} }
               >
                 {editable ? "Save" : "Edit"}
               </Button>
@@ -151,7 +152,7 @@ export class UserComponent extends React.Component {
                     variant="contained"
                     color="secondary"
                     disabled={isAdmin}
-                    onClick={ () => deleteUser(_id) }
+                    onClick={ () => deleteUser(_id, data) }
             >
               Delete
             </Button>
