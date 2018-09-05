@@ -1,0 +1,15 @@
+.user {
+  &__card {
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-items: center;
+    }
+    &__actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+}

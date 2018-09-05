@@ -1,0 +1,20 @@
+.admin-page {
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__user-list {
+    list-style: none;
+    max-width: 600px;
+    width: 100%;
+    margin: 15px;
+    text-align: center;
+    padding: 0;
+
+    &__item {
+      max-width: 500px;
+      margin: 5px auto;
+    }
+  }
+}
