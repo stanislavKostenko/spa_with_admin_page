@@ -38,7 +38,6 @@ class LoginPage extends React.Component {
   }
 
   handleUserFields(event) {
-    debugger;
     const name = event.target.name;
     const value = event.target.value;
     if (name === 'email') {
@@ -80,7 +79,6 @@ class LoginPage extends React.Component {
       .then((res) => {
         return res.json();
       }).then(data => {
-      debugger;
       console.log(data);
       if (data.status === 'success') {
         this.successValidation();
@@ -123,7 +121,6 @@ class LoginPage extends React.Component {
   }
 
   validateFields(fieldName, value) {
-    debugger;
     let emailIsValid = this.props.login.emailIsValid;
     let passwordIsValid = this.props.login.passwordIsValid;
 

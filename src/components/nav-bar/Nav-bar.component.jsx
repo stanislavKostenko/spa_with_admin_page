@@ -81,7 +81,6 @@ NavBarComponent.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => {
-  debugger;
   return {
     formValidationFailedActions: () => dispatch(formValidationFailed()),
   }
