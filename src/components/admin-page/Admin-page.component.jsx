@@ -56,10 +56,7 @@ export class AdminPageComponent extends React.Component {
   deleteUser(id) {
     let newData = this.state.data;
     newData = newData.filter((item) => item._id !== id);
-    fetch(`http://localhost:8080/api/users/${id}`,
-      {
-        method: 'DELETE'
-      }).then((res) => {
+    api.deleteUser(id).then((res) => {
       return res.json()
     });
     this.isNextButtonEnable(newData);
@@ -92,17 +89,10 @@ export class AdminPageComponent extends React.Component {
       email: email,
       password: password
     };
-    let myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    fetch(`http://localhost:8080/api/users/${id}`,
-      {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify(userData)
-      })
-      .then((res) => {
-        return res.json();
-      }).then(data => {
+    api.changeUserProps(userData, id)
+    .then((res) => {
+      return res.json();
+    }).then(data => {
       if (data.status === 'success') {
         this.setState({
           email: '',

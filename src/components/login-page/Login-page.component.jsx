@@ -8,10 +8,11 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { api } from '../api';
 
 import { Link, withRouter } from 'react-router-dom';
-import { changedEmail, changedPassword } from '../../redux/actions/login-actions';
+import { changedEmail, changedPassword } from '../../actions/login-actions';
 import { connect } from 'react-redux';
 
 
@@ -54,9 +55,7 @@ class LoginPage extends React.Component {
   handleUserFields(event) {
     const name = event.target.name;
     const value = event.target.value;
-    this.props.login.changedEmailAction(value);
-    this.props.login.changedPasswordAction(value);
-    // this.setState({ [name]: value });
+    this.setState({ [name]: value });
     this.validateFields(name, value)
   }
 
@@ -72,16 +71,9 @@ class LoginPage extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    fetch('http://localhost:8080/api/users',
-      {
-        method: 'POST',
-        headers: myHeaders,
-        body: JSON.stringify(userData)
-      })
-      .then(res => res.json())
-      .then(data => {
+    api.loginValidation(userData)
+    .then(res => res.json())
+    .then(data => {
       if (data.status === 'success') {
         this.setState({
           email: '',
@@ -104,34 +96,27 @@ class LoginPage extends React.Component {
       email: this.state.email,
       password: this.state.password
     };
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    fetch('http://localhost:8080/api/users',
-      {
-        method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify(userData)
-      })
-      .then((res)=>{
-        return res.json();
-      }).then(data => {
-        debugger;
-        console.log(data);
-        if (data.status === 'success') {
-          this.setState({
-            email: '',
-            password: '',
-            formIsValid: true
-          });
-          this.updateLogin();
-          this.updateRegistration();
-          this.returnToMainPage();
-        } else {
-          this.setState({
-            formIsValid: false
-          });
-        }
-      });
+    api.registrationValidation(userData)
+    .then((res)=>{
+      return res.json();
+    }).then(data => {
+      debugger;
+      console.log(data);
+      if (data.status === 'success') {
+        this.setState({
+          email: '',
+          password: '',
+          formIsValid: true
+        });
+        this.updateLogin();
+        this.updateRegistration();
+        this.returnToMainPage();
+      } else {
+        this.setState({
+          formIsValid: false
+        });
+      }
+    });
   }
 
   keyPress(e) {
@@ -249,19 +234,19 @@ class LoginPage extends React.Component {
 
           </CardContent>
           <CardActions classes={ { root: 'login-page__card__button-wrapper' } }>
-              <Button
-                onClick={
-                  signUp ? this.onSubmitRegistration :
-                    this.onSubmitLogin
-                }
-                classes={ { root: 'login-page__card__submit' } }
-                fullWidth={ true }
-                variant="contained"
-                disabled={ this.state.formsErrors.emailIsError || this.state.formsErrors.passwordIsError ||
-                emptyString }
-              >
-                { signIn ? 'Sign In' : 'Sign Up' }
-              </Button>
+            <Button
+              onClick={
+                signUp ? this.onSubmitRegistration :
+                  this.onSubmitLogin
+              }
+              classes={ { root: 'login-page__card__submit' } }
+              fullWidth={ true }
+              variant="contained"
+              disabled={ this.state.formsErrors.emailIsError || this.state.formsErrors.passwordIsError ||
+              emptyString }
+            >
+              { signIn ? 'Sign In' : 'Sign Up' }
+            </Button>
           </CardActions>
         </Card>
       </div>
