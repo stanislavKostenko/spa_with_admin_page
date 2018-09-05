@@ -6,7 +6,19 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-export class UserComponent extends React.Component {
+import { connect } from 'react-redux';
+
+
+import {
+  editable, notEditable,
+  updateEmail,
+  updatePassword,
+  emailSuccess, emailFailed,
+  passwordSuccess,
+  passwordFailed
+} from '../../../redux/actions/user-actions';
+
+class UserComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -162,3 +174,25 @@ export class UserComponent extends React.Component {
     )
   }
 }
+
+
+const mapStateToProps = store => {
+  return {
+    user: store.user,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    editableActions: () => dispatch(editable()),
+    notEditableActions: () => dispatch(notEditable()),
+    updateEmailActions: email => dispatch(updateEmail(email)),
+    updatePasswordActions: password => dispatch(updatePassword(password)),
+    emailSuccessActions: () => dispatch(emailSuccess()),
+    passwordSuccessActions: () => dispatch(passwordSuccess()),
+    emailFailedActions: () => dispatch(emailFailed()),
+    passwordFailedActions: () => dispatch(passwordFailed())
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserComponent);
