@@ -1,5 +1,3 @@
-import { CHANGED_EMAIL, CHANGED_PASSWORD } from '../actions/login-actions';
-
 const initialState = {
   email: '',
   password: '',
@@ -14,10 +12,11 @@ const initialState = {
 
 export const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CHANGED_EMAIL:
+    case 'UPDATE_EMAIL':
+      debugger
       return { ...state, email: action.payload };
-    case CHANGED_PASSWORD:
-      return { ...state, password: action.payload };
+    // case CHANGED_PASSWORD:
+    //   return { ...state, password: action.payload };
     // case ADMIN_LOGGED_IN:
     //   return { ...state, isAdmin: true };
     // case USER_LOGGED_OUT:

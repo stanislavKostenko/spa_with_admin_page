@@ -17,18 +17,18 @@ export const adminLoggedIn = () => {
 
 export const userLoggedOut = () => {
   return {
-    type: 'USER_IS_REGISTERED'
+    type: 'USER_LOGGED_OUT'
   }
 };
 
 export const userRegistered = () => {
   return {
-    type: 'USER_IS_LOGGED_IN'
+    type: 'USER_IS_REGISTERED'
   }
 };
 
 export const userLoggedIn = () => {
   return {
-    type: 'USER_LOGGED_OUT'
+    type: 'USER_IS_LOGGED_IN'
   }
-}
+};

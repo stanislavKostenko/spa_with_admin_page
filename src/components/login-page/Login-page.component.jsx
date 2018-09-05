@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
 import { api } from '../api';
 
 import { Link, withRouter } from 'react-router-dom';
-import { changedEmail, changedPassword } from '../../actions/login-actions';
 import { connect } from 'react-redux';
+import { updateEmail } from '../../redux/actions/login-actions';
 
 
 
@@ -260,6 +260,7 @@ LoginPage.propTypes = {
   updateRegistration: PropTypes.func.isRequired,
   updateLogin: PropTypes.func.isRequired,
   updateAdmin: PropTypes.func.isRequired,
+  updateEmailActions: PropTypes.func.isRequired
 };
 
 const mapStateToProps = store => {
@@ -270,8 +271,7 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changedEmailAction: email => dispatch(changedEmail(email)),
-    changedPasswordAction: password => dispatch(changedPassword(password))
+    updateEmailActions: email => dispatch(updateEmail(email)),
   }
 }
 
