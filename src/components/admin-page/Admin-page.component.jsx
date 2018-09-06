@@ -29,20 +29,6 @@ class AdminPageComponent extends React.Component {
   constructor(props) {
     super(props);
     this.isAdmin = this.props.isAdmin;
-    this.state = {
-      editable: false,
-      startItem: 0,
-      endItem: maxCountOfUsers,
-      nextDisable: false,
-      prevDisable: true
-    };
-    this.deleteUser = this.deleteUser.bind(this);
-    this.updateUser = this.updateUser.bind(this);
-    this.changeUserProps = this.changeUserProps.bind(this);
-    this.handleNext = this.handleNext.bind(this);
-    this.renderUsers = this.renderUsers.bind(this);
-    this.handlePrev = this.handlePrev.bind(this);
-    this.isNextButtonEnable = this.isNextButtonEnable.bind(this);
   }
 
   componentDidMount() {
@@ -64,14 +50,14 @@ class AdminPageComponent extends React.Component {
     });
   }
 
-  deleteUser(id, data) {
+  handleDeleteUser = (id, data) => {
     const newData = data.filter((item) => item._id !== id);
     api.deleteUser(id);
     this.isNextButtonEnable(newData);
     this.props.deleteDataItemActions(newData);
   }
 
-  updateUser(id, data, email, password, passwordIsError, emailIsError,) {
+  handleUpdateUser = (id, data, email, password, passwordIsError, emailIsError) => {
     const newData = data.map((user) => {
       if (user._id === id) {
         user.email = email;
@@ -81,7 +67,6 @@ class AdminPageComponent extends React.Component {
     });
     this.props.updateDataItemActions(newData);
     if (!passwordIsError || !emailIsError) {
-
       this.changeUserProps(email, password, id);
     }
   }
@@ -145,8 +130,8 @@ class AdminPageComponent extends React.Component {
               email={ user.email }
               password={ user.password }
               _id={ user._id }
-              deleteUser={ this.deleteUser }
-              updateUser={ this.updateUser }/>
+              deleteUser={ this.handleDeleteUser }
+              updateUser={ this.handleUpdateUser }/>
           </li> );
         }
 
@@ -166,9 +151,7 @@ class AdminPageComponent extends React.Component {
                   variant="contained"
                   color="primary"
                   disabled={ admin.prevDisable }
-                  onClick={ () => {
-                    this.handlePrev(admin);
-                  } }
+                  onClick={ () => this.handlePrev(admin) }
           >
             Prev
           </Button>
@@ -179,9 +162,7 @@ class AdminPageComponent extends React.Component {
                   variant="contained"
                   color="secondary"
                   disabled={ admin.nextDisable }
-                  onClick={ () => {
-                    this.handleNext(admin);
-                  } }
+                  onClick={ () => this.handleNext(admin) }
           >
             Next
           </Button>
