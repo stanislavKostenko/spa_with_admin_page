@@ -7,7 +7,7 @@ const initialState = {
   },
   emailIsValid: '',
   passwordIsValid: false,
-  formIsValid: false,
+  formIsValid: true,
 };
 
 export const loginReducer = (state = initialState, action) => {
@@ -19,7 +19,7 @@ export const loginReducer = (state = initialState, action) => {
     case 'FORM_VALIDATION_SUCCESS':
       return { ...state, formIsValid: true };
     case 'FORM_VALIDATION_FAILED':
-      return { ...state, formIsValid: false};
+      return { ...state, formIsValid: false };
     case 'EMAIL_SUCCESS':
       return { ...state, emailIsError: false };
     case 'EMAIL_FAILED':
@@ -30,7 +30,7 @@ export const loginReducer = (state = initialState, action) => {
       return { ...state, passwordIsError: true };
 
     default:
-      return state
+      return state;
   }
 };
 

@@ -1,26 +1,28 @@
-import * as React from 'react';
+import * as React  from 'react';
 import './Login-page.component.scss';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
+import Card        from '@material-ui/core/Card';
+import CardHeader  from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
+import TextField   from '@material-ui/core/TextField';
 import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import PropTypes from 'prop-types';
-import { api } from '../api';
+import Button      from '@material-ui/core/Button';
+import IconButton  from '@material-ui/core/IconButton';
+import CloseIcon   from '@material-ui/icons/Close';
+import PropTypes   from 'prop-types';
+import { api }     from '../api';
 
 import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect }          from 'react-redux';
 import {
-  emailFailed, emailSuccess,
+  emailFailed,
+  emailSuccess,
   formValidationFailed,
   formValidationSuccess,
-  passwordFailed, passwordSuccess,
+  passwordFailed,
+  passwordSuccess,
   updateEmail,
   updatePassword
-} from '../../redux/actions/login-actions';
+}                           from '../../redux/actions/login-actions';
 
 
 class LoginPage extends React.Component {
@@ -45,7 +47,7 @@ class LoginPage extends React.Component {
     } else if (name === 'password') {
       this.props.updatePasswordActions(value);
     }
-    this.validateFields(name, value)
+    this.validateFields(name, value);
   }
 
   onChangeHandler(e) {
@@ -79,7 +81,6 @@ class LoginPage extends React.Component {
       .then((res) => {
         return res.json();
       }).then(data => {
-      console.log(data);
       if (data.status === 'success') {
         this.successValidation();
       } else {
@@ -93,7 +94,7 @@ class LoginPage extends React.Component {
     if (isEnter && this.props.signIn) {
       this.onSubmitLogin();
     } else if (isEnter) {
-      this.onSubmitRegistration()
+      this.onSubmitRegistration();
     }
   }
 
@@ -142,6 +143,14 @@ class LoginPage extends React.Component {
     }
   }
 
+  labelGenerator(login, signUp) {
+    if (signUp) {
+      return !login.formIsValid ? 'Account with this email already exists' : 'Email';
+    } else {
+      return !login.formIsValid ? 'Wrong email or password' : 'Email';
+    }
+  }
+
   render() {
     const { signIn, signUp, login } = this.props;
     const emptyString = login.email === '' && login.password === '';
@@ -167,11 +176,11 @@ class LoginPage extends React.Component {
               <TextField
                 fullWidth={ true }
                 type="email"
-                label={ login.formIsValid ? 'Account with this email already exists' : 'Email' }
+                label={ this.labelGenerator(login, signUp) }
                 name="email"
                 value={ login.email }
                 onChange={ this.onChangeHandler }
-                error={ login.emailIsError || login.formIsValid }
+                error={ login.emailIsError || !login.formIsValid }
               />
               <TextField
                 fullWidth={ true }
@@ -204,7 +213,7 @@ class LoginPage extends React.Component {
           </CardActions>
         </Card>
       </div>
-    )
+    );
   }
 }
 
@@ -219,7 +228,7 @@ LoginPage.propTypes = {
 const mapStateToProps = store => {
   return {
     login: store.login,
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -232,7 +241,7 @@ const mapDispatchToProps = dispatch => {
     passwordSuccessActions: () => dispatch(passwordSuccess()),
     emailFailedActions: () => dispatch(emailFailed()),
     passwordFailedActions: () => dispatch(passwordFailed())
-  }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));

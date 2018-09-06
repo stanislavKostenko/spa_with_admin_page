@@ -1,23 +1,27 @@
-import * as React from 'react'
-import { UserComponent }  from './User/User.component';
+import * as React        from 'react';
+import { UserComponent } from './User/User.component';
 import './Admin-page.component.scss';
-import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
-import { api } from '../api';
-import { connect } from 'react-redux';
+import Button            from '@material-ui/core/Button';
+import PropTypes         from 'prop-types';
+import { api }           from '../api';
+import { connect }       from 'react-redux';
 import {
   deleteDataItem,
   nextButtonDisable,
-  nextButtonEnable, prevButtonDisable, prevButtonEnable,
+  nextButtonEnable,
+  prevButtonDisable,
+  prevButtonEnable,
   updateData,
-  updateDataItem, updateEndItem, updateStartItem
-} from '../../redux/actions/admin-actions';
+  updateDataItem,
+  updateEndItem,
+  updateStartItem
+}                        from '../../redux/actions/admin-actions';
 import {
   formValidationFailed,
   formValidationSuccess,
   updateEmail,
   updatePassword
-} from '../../redux/actions/login-actions';
+}                        from '../../redux/actions/login-actions';
 
 export const maxCountOfUsers = 4;
 
@@ -43,7 +47,7 @@ class AdminPageComponent extends React.Component {
 
   componentDidMount() {
     if (this.isAdmin) {
-      this.getUsers()
+      this.getUsers();
     }
   }
 
@@ -55,7 +59,7 @@ class AdminPageComponent extends React.Component {
 
   getUsers() {
     api.getUsers().then((res) => {
-      return res.json()
+      return res.json();
     }).then((data) => {
       this.isNextButtonEnable(data);
       this.props.updateDataActions(data);
@@ -65,10 +69,10 @@ class AdminPageComponent extends React.Component {
   deleteUser(id, data) {
     const newData = data.filter((item) => item._id !== id);
     api.deleteUser(id).then((res) => {
-      return res.json()
+      return res.json();
     });
     this.isNextButtonEnable(newData);
-    this.props.deleteDataItemActions(newData)
+    this.props.deleteDataItemActions(newData);
   }
 
   updateUser(id, data, email, password, passwordIsError, emailIsError,) {
@@ -103,7 +107,7 @@ class AdminPageComponent extends React.Component {
         return res.json();
       }).then(data => {
       if (data.status === 'success') {
-        this.successValidation()
+        this.successValidation();
       } else {
         this.props.formValidationFailedActions();
       }
@@ -122,8 +126,8 @@ class AdminPageComponent extends React.Component {
   }
 
   handlePrev(admin) {
-    if (!(admin.startItem - maxCountOfUsers)) {
-      this.props.prevButtonDisableActions()
+    if (!( admin.startItem - maxCountOfUsers )) {
+      this.props.prevButtonDisableActions();
     }
     if (admin.data.length <= maxCountOfUsers) {
       this.props.nextButtonDisableActions();
@@ -137,12 +141,11 @@ class AdminPageComponent extends React.Component {
     this.props.updateEndItemActions(endItem);
   }
 
-
   renderUsers(data, start, end) {
     return (
       data.map((user, i) => {
         if (start <= i && i < end) {
-          return <li className="admin-page__user-list__item" key={ user._id }>
+          return ( <li className="admin-page__user-list__item" key={ user._id }>
             <UserComponent
               data={ data }
               email={ user.email }
@@ -150,11 +153,13 @@ class AdminPageComponent extends React.Component {
               _id={ user._id }
               deleteUser={ this.deleteUser }
               updateUser={ this.updateUser }/>
-          </li>
+          </li> );
         }
+
+        return null
       })
 
-    )
+    );
   }
 
   render() {
@@ -168,7 +173,7 @@ class AdminPageComponent extends React.Component {
                   color="primary"
                   disabled={ admin.prevDisable }
                   onClick={ () => {
-                    this.handlePrev(admin)
+                    this.handlePrev(admin);
                   } }
           >
             Prev
@@ -181,14 +186,14 @@ class AdminPageComponent extends React.Component {
                   color="secondary"
                   disabled={ admin.nextDisable }
                   onClick={ () => {
-                    this.handleNext(admin)
+                    this.handleNext(admin);
                   } }
           >
             Next
           </Button>
         </div> }
       </div>
-    )
+    );
   }
 }
 
@@ -199,7 +204,7 @@ AdminPageComponent.propTypes = {
 const mapStateToProps = store => {
   return {
     admin: store.admin,
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -218,7 +223,7 @@ const mapDispatchToProps = dispatch => {
     updateStartItemActions: item => dispatch(updateStartItem(item)),
     updateEndItemActions: item => dispatch(updateEndItem(item)),
 
-  }
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPageComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPageComponent);

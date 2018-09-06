@@ -1,13 +1,14 @@
-import * as React from 'react';
+import * as React            from 'react';
 import './App.scss';
-import { HashRouter as Router, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-
-
-import NavBarComponent from './nav-bar/Nav-bar.component';
-import LoginPage from './login-page/Login-page.component';
+import {
+  HashRouter as Router,
+  Route
+}                            from 'react-router-dom';
+import { connect }           from 'react-redux';
+import NavBarComponent       from './nav-bar/Nav-bar.component';
+import LoginPage             from './login-page/Login-page.component';
 import { HomePageComponent } from './home-page/Home-page.component';
-import AdminPageComponent from './admin-page/Admin-page.component';
+import AdminPageComponent    from './admin-page/Admin-page.component';
 import {
   adminLoggedIn,
   updateSignIn,
@@ -15,7 +16,7 @@ import {
   userLoggedIn,
   userLoggedOut,
   userRegistered
-} from '../redux/actions/app-actions';
+}                            from '../redux/actions/app-actions';
 
 class App extends React.Component {
   constructor(props) {
@@ -29,11 +30,11 @@ class App extends React.Component {
 
   defaultLocation() {
     let currentLocation = window.location.href.split('/');
-    currentLocation = currentLocation[currentLocation.length - 1];
+    currentLocation = currentLocation[ currentLocation.length - 1 ];
     if (currentLocation === 'login') {
-      this.props.updateSignInAction()
+      this.props.updateSignInAction();
     } else if (currentLocation === 'registration') {
-      this.props.updateSignUpAction()
+      this.props.updateSignUpAction();
     }
   }
 
@@ -79,7 +80,7 @@ class App extends React.Component {
 const mapStateToProps = store => {
   return {
     app: store.app,
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -90,7 +91,7 @@ const mapDispatchToProps = dispatch => {
     userLoggedOutAction: () => dispatch(userLoggedOut()),
     userRegisteredAction: () => dispatch(userRegistered()),
     userLoggedInAction: () => dispatch(userLoggedIn()),
-  }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

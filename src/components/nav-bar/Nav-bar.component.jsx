@@ -1,23 +1,23 @@
-import * as React from 'react'
-import { Link } from 'react-router-dom';
-import './Nav-bar.component.scss'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/es/Toolbar/Toolbar';
-import Button from '@material-ui/core/es/Button/Button';
-import PropTypes from 'prop-types'
-import { formValidationFailed } from '../../redux/actions/login-actions';
-import { connect } from 'react-redux';
+import * as React                from 'react';
+import { Link }                  from 'react-router-dom';
+import './Nav-bar.component.scss';
+import AppBar                    from '@material-ui/core/AppBar';
+import Toolbar                   from '@material-ui/core/es/Toolbar/Toolbar';
+import Button                    from '@material-ui/core/es/Button/Button';
+import PropTypes                 from 'prop-types';
+import { formValidationSuccess } from '../../redux/actions/login-actions';
+import { connect }               from 'react-redux';
 
 class NavBarComponent extends React.Component {
 
 
-  renderUserView(isAdmin) {
+   renderUserView(isAdmin) {
     if (isAdmin) {
       return (
         <Link to={ '/settings' } className="nav-bar__button">
           <Button color="inherit">Settings</Button>
         </Link>
-      )
+      );
     }
   }
 
@@ -29,24 +29,30 @@ class NavBarComponent extends React.Component {
             <Button color="inherit">Log out</Button>
           </Link>
         </div>
-      )
+      );
     } else {
       return (
         <div className="nav-bar__button_login">
           <Link
-            onClick={ () => {updateSignIn(); this.props.formValidationFailedActions()} }
+            onClick={ () => {
+              updateSignIn();
+              this.props.formValidationSuccessActions();
+            } }
             className="nav-bar__button"
             to={ '/login' }>
             <Button color="inherit">Sign In</Button>
           </Link>
           <Link
-            onClick={ () => {updateSignUp(); this.props.formValidationFailedActions()} }
+            onClick={ () => {
+              updateSignUp();
+              this.props.formValidationSuccessActions();
+            } }
             className="nav-bar__button"
             to={ '/registration' }>
             <Button color="inherit">Sign Up</Button>
           </Link>
         </div>
-      )
+      );
     }
   }
 
@@ -58,9 +64,6 @@ class NavBarComponent extends React.Component {
           <Toolbar>
             <Link to={ '/' } className="nav-bar__button">
               <Button color="inherit">Home</Button>
-            </Link>
-            <Link to={ '/' } className="nav-bar__button">
-              <Button color="inherit">About</Button>
             </Link>
             { this.renderUserView(isAdmin) }
             { this.renderLoginButton(isLoggedIn, updateSignIn, updateSignUp, loggedOut) }
@@ -82,8 +85,8 @@ NavBarComponent.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    formValidationFailedActions: () => dispatch(formValidationFailed()),
-  }
+    formValidationSuccessActions: () => dispatch(formValidationSuccess()),
+  };
 };
 
 export default connect(null, mapDispatchToProps)(NavBarComponent);

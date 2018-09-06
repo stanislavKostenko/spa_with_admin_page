@@ -10,7 +10,6 @@ const initialState = {
 };
 
 export const adminReducer = (state = initialState, action) => {
-  console.log(state.startItem, state.endItem);
   switch (action.type) {
     case 'UPDATE_DATA':
       return { ...state, data: action.payload };
@@ -31,6 +30,6 @@ export const adminReducer = (state = initialState, action) => {
     case 'PREV_BTN_ENABLE':
       return { ...state, prevDisable: false };
     default:
-      return state
+      return state;
   }
-}
+};

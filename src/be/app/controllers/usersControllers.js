@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator/check');
 exports.get_users = (req, res) => {
   Users.find((err, users) => {
     err ? res.send(err) : res.json(users);
-  })
+  });
 };
 
 exports.put_users = (req, res) => {
@@ -21,13 +21,12 @@ exports.put_users = (req, res) => {
 
     const user = new Users(document);
     user.save((err) => {
-      console.log(user);
       if (err) {
         throw err;
       } else {
         res.json({ message: 'Data saved successfully.', status: 'success' });
       }
-    })
+    });
   }
 };
 

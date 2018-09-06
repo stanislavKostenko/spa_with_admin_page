@@ -17,13 +17,15 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-  res.json({ message: 'Welcome to our API' })
+  res.json({ message: 'Welcome to our API' });
 });
 
 router.route('/users')
-  .put(jsonParser, [User_validator.checkUserByEmail], Users_controller.put_users)
+  .put(jsonParser, [ User_validator.checkUserByEmail ], Users_controller.put_users)
   .get(Users_controller.get_users)
-  .post(jsonParser, [User_validator.checkLoginValidationEmail, User_validator.checkPasswordValidation], Users_controller.post_users);
+  .post(jsonParser,
+    [ User_validator.checkLoginValidationEmail, User_validator.checkPasswordValidation ],
+    Users_controller.post_users);
 
 router.route('/users/:user_id')
   .get(User_controller.get_user)

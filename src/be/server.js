@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 8080;
 
-app.use(cors({credentials: true, origin: true}));
+app.use(cors({ credentials: true, origin: true }));
 
 app.use('/api', router);
 app.listen(port);
