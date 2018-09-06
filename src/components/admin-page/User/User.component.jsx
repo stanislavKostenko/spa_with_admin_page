@@ -57,19 +57,11 @@ export class UserComponent extends React.Component {
     switch (fieldName) {
       case 'email':
         emailIsValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-        if (emailIsValid === null || emailIsValid.length !== 4) {
-          this.setState({
-            formsErrors: {
-              emailIsError: true
-            }
-          });
-        } else {
-          this.setState({
-            formsErrors: {
-              emailIsError: false
-            }
-          });
-        }
+        this.setState({
+          formsErrors: {
+            emailIsError: emailIsValid === null || emailIsValid.length !== 4
+          }
+        });
         break;
       case 'password':
         passwordIsValid = value.length >= 6;
