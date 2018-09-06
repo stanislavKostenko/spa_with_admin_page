@@ -35,6 +35,11 @@ class UserComponent extends React.Component {
     this.editableSwitch = this.editableSwitch.bind(this);
   }
 
+  componentDidMount() {
+    this.props.updateEmailActions(this.props.email);
+    this.props.updatePasswordActions(this.props.password);
+  }
+
   editableUser() {
     const { emailIsError, passwordIsError } = this.state.formsErrors;
     if( emailIsError || passwordIsError ) {
@@ -107,7 +112,7 @@ class UserComponent extends React.Component {
             placeholder="email"
             name="email"
             onChange={ this.onChangeHandler }
-            value={ this.state.email }
+            value={ this.props.user.email }
             error={ emailIsError }
             disabled={isAdmin}/>
           <TextField
@@ -117,7 +122,7 @@ class UserComponent extends React.Component {
             placeholder="password"
             name="password"
             onChange={ this.onChangeHandler }
-            value={ this.state.password }
+            value={ this.props.user.password }
             error={ passwordIsError }/>
           <span className="user__card__content__id">User ID: { this.props._id }</span>
         </CardContent>

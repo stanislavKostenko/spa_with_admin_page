@@ -1,7 +1,7 @@
 const initialState = {
   editable: false,
-  email: this.props.email,
-  password: this.props.password,
+  email: '',
+  password: '',
   formsErrors: {
     emailIsError: false,
     passwordIsError: false
