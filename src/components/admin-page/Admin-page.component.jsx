@@ -2,10 +2,13 @@ import * as React  from 'react';
 import { connect } from 'react-redux';
 
 import Button    from '@material-ui/core/Button';
+
+import './Admin-page.component.scss';
+
 import PropTypes from 'prop-types';
 
 import { UserComponent } from './User/User.component';
-import './Admin-page.component.scss';
+
 
 import { api } from '../api';
 

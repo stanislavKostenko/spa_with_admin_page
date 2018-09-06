@@ -1,10 +1,11 @@
 import * as React            from 'react';
-import './App.scss';
 import {
   HashRouter as Router,
   Route
 }                            from 'react-router-dom';
 import { connect }           from 'react-redux';
+
+import './App.scss';
 
 import NavBarComponent       from './nav-bar/Nav-bar.component';
 import LoginPage             from './login-page/Login-page.component';

@@ -1,12 +1,14 @@
 import * as React                from 'react';
 import { Link }                  from 'react-router-dom';
-import './Nav-bar.component.scss';
+import { connect }               from 'react-redux';
 import AppBar                    from '@material-ui/core/AppBar';
 import Toolbar                   from '@material-ui/core/es/Toolbar/Toolbar';
 import Button                    from '@material-ui/core/es/Button/Button';
+
+import './Nav-bar.component.scss';
+
 import PropTypes                 from 'prop-types';
 import { formValidationSuccess } from '../../redux/actions/login-actions';
-import { connect }               from 'react-redux';
 
 class NavBarComponent extends React.Component {
 

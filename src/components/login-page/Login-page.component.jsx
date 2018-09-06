@@ -10,10 +10,14 @@ import CardActions from '@material-ui/core/CardActions';
 import Button      from '@material-ui/core/Button';
 import IconButton  from '@material-ui/core/IconButton';
 import CloseIcon   from '@material-ui/icons/Close';
-import PropTypes   from 'prop-types';
-import { api }     from '../api';
 
 import './Login-page.component.scss';
+
+import PropTypes   from 'prop-types';
+
+
+import { api }     from '../api';
+
 
 import {
   emailFailed,
