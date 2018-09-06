@@ -6,19 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-import { connect } from 'react-redux';
-
-
-import {
-  editable, notEditable,
-  updateEmail,
-  updatePassword,
-  emailSuccess, emailFailed,
-  passwordSuccess,
-  passwordFailed
-} from '../../../redux/actions/user-actions';
-
-class UserComponent extends React.Component {
+export class UserComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,11 +21,6 @@ class UserComponent extends React.Component {
     this.editableUser = this.editableUser.bind(this);
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.editableSwitch = this.editableSwitch.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.updateEmailActions(this.props.email);
-    this.props.updatePasswordActions(this.props.password);
   }
 
   editableUser() {
@@ -112,7 +95,7 @@ class UserComponent extends React.Component {
             placeholder="email"
             name="email"
             onChange={ this.onChangeHandler }
-            value={ this.props.user.email }
+            value={ this.state.email }
             error={ emailIsError }
             disabled={isAdmin}/>
           <TextField
@@ -122,7 +105,7 @@ class UserComponent extends React.Component {
             placeholder="password"
             name="password"
             onChange={ this.onChangeHandler }
-            value={ this.props.user.password }
+            value={ this.state.password }
             error={ passwordIsError }/>
           <span className="user__card__content__id">User ID: { this.props._id }</span>
         </CardContent>
@@ -179,25 +162,3 @@ class UserComponent extends React.Component {
     )
   }
 }
-
-
-const mapStateToProps = store => {
-  return {
-    user: store.user,
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    editableActions: () => dispatch(editable()),
-    notEditableActions: () => dispatch(notEditable()),
-    updateEmailActions: email => dispatch(updateEmail(email)),
-    updatePasswordActions: password => dispatch(updatePassword(password)),
-    emailSuccessActions: () => dispatch(emailSuccess()),
-    passwordSuccessActions: () => dispatch(passwordSuccess()),
-    emailFailedActions: () => dispatch(emailFailed()),
-    passwordFailedActions: () => dispatch(passwordFailed())
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserComponent);

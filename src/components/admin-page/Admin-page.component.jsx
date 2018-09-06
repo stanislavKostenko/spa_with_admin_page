@@ -1,5 +1,5 @@
 import * as React from 'react'
-import UserComponent  from './User/User.component';
+import { UserComponent }  from './User/User.component';
 import './Admin-page.component.scss';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
