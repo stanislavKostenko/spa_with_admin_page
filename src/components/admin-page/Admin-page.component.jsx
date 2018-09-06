@@ -1,16 +1,13 @@
 import * as React  from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Button    from '@material-ui/core/Button';
 
-import './Admin-page.component.scss';
-
-import PropTypes from 'prop-types';
-
 import { UserComponent } from './User/User.component';
-
-
 import { api } from '../api';
+
+import './Admin-page.component.scss';
 
 import {
   deleteDataItem,
@@ -132,17 +129,18 @@ class AdminPageComponent extends React.Component {
       data.map((user, i) => {
         const userRangeCheck = start <= i && i < end;
         if (userRangeCheck) {
-          return ( <li className="admin-page__user-list__item" key={ user._id }>
-            <UserComponent
-              data={ data }
-              email={ user.email }
-              password={ user.password }
-              _id={ user._id }
-              deleteUser={ this.handleDeleteUser.bind(this) }
-              updateUser={ this.handleUpdateUser.bind(this) }/>
-          </li> );
+          return (
+            <li className="admin-page__user-list__item" key={ user._id }>
+              <UserComponent
+                data={ data }
+                email={ user.email }
+                password={ user.password }
+                _id={ user._id }
+                deleteUser={ this.handleDeleteUser.bind(this) }
+                updateUser={ this.handleUpdateUser.bind(this) }/>
+            </li>
+          );
         }
-
         return null;
       })
 

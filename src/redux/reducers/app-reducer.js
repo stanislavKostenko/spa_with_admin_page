@@ -15,7 +15,12 @@ export const appReducer = (state = initialState, action) => {
     case 'ADMIN_LOGGED_IN':
       return { ...state, isAdmin: true };
     case 'USER_LOGGED_OUT':
-      return { ...state, isAdmin: false, isLoggedIn: false, isRegistered: false};
+      return {
+        ...state,
+        isAdmin: false,
+        isLoggedIn: false,
+        isRegistered: false
+      };
     case 'USER_IS_REGISTERED':
       return { ...state, isRegistered: true, isLoggedIn: true };
     case 'USER_IS_LOGGED_IN':

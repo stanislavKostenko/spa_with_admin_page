@@ -1,6 +1,7 @@
 import * as React  from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect }          from 'react-redux';
+import PropTypes   from 'prop-types';
 
 import Card        from '@material-ui/core/Card';
 import CardHeader  from '@material-ui/core/CardHeader';
@@ -11,13 +12,8 @@ import Button      from '@material-ui/core/Button';
 import IconButton  from '@material-ui/core/IconButton';
 import CloseIcon   from '@material-ui/icons/Close';
 
+import {api, apiUrl} from '../api';
 import './Login-page.component.scss';
-
-import PropTypes   from 'prop-types';
-
-
-import { api }     from '../api';
-
 
 import {
   emailFailed,
@@ -28,7 +24,7 @@ import {
   passwordSuccess,
   updateEmail,
   updatePassword
-}                           from '../../redux/actions/login-actions';
+}                  from '../../redux/actions/login-actions';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -103,7 +99,8 @@ class LoginPage extends React.Component {
   }
 
   onSubmitLogin() {
-    if (this.props.login.email === 'admin9999@gmail.com' && this.props.login.password === 'admin9999') {
+    if (this.props.login.email === 'admin9999@gmail.com' &&
+        this.props.login.password === 'admin9999') {
       this.updateAdmin();
     }
     const userData = {
@@ -132,7 +129,11 @@ class LoginPage extends React.Component {
         break;
       case 'password':
         passwordIsValid = value.length >= 6;
-        !passwordIsValid ? this.props.passwordFailedActions() : this.props.passwordSuccessActions();
+        if (passwordIsValid) {
+          this.props.passwordSuccessActions();
+        } else {
+          this.props.passwordFailedActions();
+        }
         break;
       default:
         break;
@@ -141,9 +142,18 @@ class LoginPage extends React.Component {
 
   labelGenerator(login, signUp) {
     if (signUp) {
-      return !login.formIsValid ? 'Account with this email already exists' : 'Email';
+      return login.formIsValid ? 'Email'
+                               : 'Account with this email already exists';
     } else {
-      return !login.formIsValid ? 'Wrong email or password' : 'Email';
+      return login.formIsValid ? 'Email' : 'Wrong email or password';
+    }
+  }
+
+  handleSubmit(signUp) {
+    if (signUp) {
+      this.onSubmitRegistration();
+    } else {
+      this.onSubmitLogin();
     }
   }
 
@@ -168,7 +178,7 @@ class LoginPage extends React.Component {
             </Link>
           </div>
           <CardContent classes={ { root: 'login-page__card__content' } }>
-            <form action="http://localhost:8080/api/users" method="post">
+            <form action={apiUrl + '/api/users'} method="post">
               <TextField
                 fullWidth={ true }
                 type="email"
@@ -182,7 +192,8 @@ class LoginPage extends React.Component {
               <TextField
                 fullWidth={ true }
                 type="password"
-                label={ login.passwordIsError ? 'A password should be more than 5 symbols' : 'Password' }
+                label={ login.passwordIsError
+                  ? 'A password should be more than 5 symbols' : 'Password' }
                 name="password"
                 value={ login.password }
                 onChange={ this.onChangeHandler.bind(this) }
@@ -190,12 +201,10 @@ class LoginPage extends React.Component {
                 onKeyDown={ this.keyPress.bind(this) }
               />
             </form>
-
-
           </CardContent>
           <CardActions classes={ { root: 'login-page__card__button-wrapper' } }>
             <Button
-              onClick={ signUp ? this.onSubmitRegistration.bind(this) : this.onSubmitLogin.bind(this) }
+              onClick={ this.handleSubmit.bind(this, signUp) }
               classes={ { root: 'login-page__card__submit' } }
               fullWidth={ true }
               variant="contained"
@@ -238,4 +247,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginPage));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps)(withRouter(LoginPage));

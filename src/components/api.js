@@ -3,7 +3,8 @@ let myHeaders = new Headers();
 myHeaders.append('Content-Type', 'application/json');
 
 export const api = {
-  getUsers: () => fetch(apiUrl + '/api/users', { method: 'GET' }).then((res) => res.json()),
+  getUsers: () => fetch(apiUrl + '/api/users', { method: 'GET' })
+  .then((res) => res.json()),
 
   loginValidation: (userData) => fetch(apiUrl + '/api/users',
       {
@@ -19,7 +20,8 @@ export const api = {
         body: JSON.stringify(userData),
       }).then((res) => res.json()),
 
-  deleteUser: (id) =>  fetch(apiUrl + '/api/users/' + id, { method: 'DELETE', }).then((res) => res.json()),
+  deleteUser: (id) =>  fetch(apiUrl + '/api/users/' + id, { method: 'DELETE', })
+  .then((res) => res.json()),
 
   changeUserProps: (userData, id) => fetch(apiUrl + '/api/users/' + id,
       {

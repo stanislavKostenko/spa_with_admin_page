@@ -5,8 +5,6 @@ import {
 }                            from 'react-router-dom';
 import { connect }           from 'react-redux';
 
-import './App.scss';
-
 import NavBarComponent       from './nav-bar/Nav-bar.component';
 import LoginPage             from './login-page/Login-page.component';
 import { HomePageComponent } from './home-page/Home-page.component';
@@ -20,6 +18,8 @@ import {
   userLoggedOut,
   userRegistered
 }                            from '../redux/actions/app-actions';
+
+import './App.scss';
 
 class App extends React.Component {
 
@@ -69,7 +69,8 @@ class App extends React.Component {
                 updateAdmin={ adminLoggedInAction }
               /> }
           />
-          <Route path={ '/settings' } render={ () => <AdminPageComponent isAdmin={ app.isAdmin }/> }/>
+          <Route path={ '/settings' }
+                 render={ () => <AdminPageComponent isAdmin={ app.isAdmin }/> }/>
         </div>
       </Router>
     );
