@@ -26,16 +26,9 @@ import {
   updatePassword
 }                           from '../../redux/actions/login-actions';
 
-
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-
-
-    this.onSubmitRegistration = this.onSubmitRegistration.bind(this);
-    this.onSubmitLogin = this.onSubmitLogin.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.keyPress = this.keyPress.bind(this);
     this.updateRegistration = this.props.updateRegistration;
     this.updateLogin = this.props.updateLogin;
     this.updateAdmin = this.props.updateAdmin;
@@ -97,7 +90,7 @@ class LoginPage extends React.Component {
     }
   }
 
-  onSubmitRegistration() {
+  onSubmitRegistration () {
     const userData = {
       email: this.props.login.email,
       password: this.props.login.password
@@ -178,7 +171,7 @@ class LoginPage extends React.Component {
                 label={ this.labelGenerator(login, signUp) }
                 name="email"
                 value={ login.email }
-                onChange={ this.onChangeHandler }
+                onChange={ this.onChangeHandler.bind(this) }
                 error={ login.emailIsError || !login.formIsValid }
                 autoComplete={'off'}
               />
@@ -188,9 +181,9 @@ class LoginPage extends React.Component {
                 label={ login.passwordIsError ? 'A password should be more than 5 symbols' : 'Password' }
                 name="password"
                 value={ login.password }
-                onChange={ this.onChangeHandler }
+                onChange={ this.onChangeHandler.bind(this) }
                 error={ login.passwordIsError }
-                onKeyDown={ this.keyPress }
+                onKeyDown={ this.keyPress.bind(this) }
               />
             </form>
 
@@ -198,10 +191,7 @@ class LoginPage extends React.Component {
           </CardContent>
           <CardActions classes={ { root: 'login-page__card__button-wrapper' } }>
             <Button
-              onClick={
-                signUp ? this.onSubmitRegistration :
-                  this.onSubmitLogin
-              }
+              onClick={ signUp ? this.onSubmitRegistration.bind(this) : this.onSubmitLogin.bind(this) }
               classes={ { root: 'login-page__card__submit' } }
               fullWidth={ true }
               variant="contained"

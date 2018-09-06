@@ -1,13 +1,13 @@
-import * as React        from 'react';
-import { connect }       from 'react-redux';
+import * as React  from 'react';
+import { connect } from 'react-redux';
 
-import Button            from '@material-ui/core/Button';
-import PropTypes         from 'prop-types';
+import Button    from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
 
 import { UserComponent } from './User/User.component';
 import './Admin-page.component.scss';
 
-import { api }           from '../api';
+import { api } from '../api';
 
 import {
   deleteDataItem,
@@ -19,13 +19,13 @@ import {
   updateDataItem,
   updateEndItem,
   updateStartItem
-}                        from '../../redux/actions/admin-actions';
+} from '../../redux/actions/admin-actions';
 import {
   formValidationFailed,
   formValidationSuccess,
   updateEmail,
   updatePassword
-}                        from '../../redux/actions/login-actions';
+} from '../../redux/actions/login-actions';
 
 export const maxCountOfUsers = 4;
 
@@ -54,14 +54,14 @@ class AdminPageComponent extends React.Component {
     });
   }
 
-  handleDeleteUser = (id, data) => {
+  handleDeleteUser(id, data) {
     const newData = data.filter((item) => item._id !== id);
     api.deleteUser(id);
     this.isNextButtonEnable(newData);
     this.props.deleteDataItemActions(newData);
-  }
+  };
 
-  handleUpdateUser = (id, data, email, password, passwordIsError, emailIsError) => {
+  handleUpdateUser(id, data, email, password, passwordIsError, emailIsError) {
     const newData = data.map((user) => {
       if (user._id === id) {
         user.email = email;
@@ -73,7 +73,7 @@ class AdminPageComponent extends React.Component {
     if (!passwordIsError || !emailIsError) {
       this.changeUserProps(email, password, id);
     }
-  }
+  };
 
   successValidation() {
     let empty = '';
@@ -89,12 +89,12 @@ class AdminPageComponent extends React.Component {
     };
     api.changeUserProps(userData, id)
       .then(data => {
-      if (data.status === 'success') {
-        this.successValidation();
-      } else {
-        this.props.formValidationFailedActions();
-      }
-    });
+        if (data.status === 'success') {
+          this.successValidation();
+        } else {
+          this.props.formValidationFailedActions();
+        }
+      });
   }
 
   handleNext(admin) {
@@ -135,12 +135,12 @@ class AdminPageComponent extends React.Component {
               email={ user.email }
               password={ user.password }
               _id={ user._id }
-              deleteUser={ this.handleDeleteUser }
-              updateUser={ this.handleUpdateUser }/>
+              deleteUser={ this.handleDeleteUser.bind(this) }
+              updateUser={ this.handleUpdateUser.bind(this) }/>
           </li> );
         }
 
-        return null
+        return null;
       })
 
     );

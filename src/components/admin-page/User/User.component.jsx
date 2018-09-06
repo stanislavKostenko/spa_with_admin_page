@@ -1,4 +1,4 @@
-import * as React  from 'react';
+import * as React from 'react';
 
 import Card        from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -32,7 +32,7 @@ export class UserComponent extends React.Component {
     });
   }
 
-  onChangeHandler = (e) => {
+  onChangeHandler(e) {
     const name = e.target.name;
     const value = e.target.value;
     if (name === 'email') {
@@ -85,7 +85,7 @@ export class UserComponent extends React.Component {
             label="Email"
             placeholder="email"
             name="email"
-            onChange={ this.onChangeHandler }
+            onChange={ this.onChangeHandler.bind(this) }
             value={ this.state.email }
             error={ emailIsError }
             disabled={ isAdmin }/>
@@ -95,7 +95,7 @@ export class UserComponent extends React.Component {
             label="password:"
             placeholder="password"
             name="password"
-            onChange={ this.onChangeHandler }
+            onChange={ this.onChangeHandler.bind(this) }
             value={ this.state.password }
             error={ passwordIsError }/>
           <span className="user__card__content__id">User ID: { this.props._id }</span>
@@ -113,7 +113,7 @@ export class UserComponent extends React.Component {
     }
   }
 
-  handleEditableSwitch = (id, data) => {
+  handleEditableSwitch(id, data) {
     const { editable, email, password } = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
     if (editable) {
