@@ -20,9 +20,6 @@ export class UserComponent extends React.Component {
         passwordIsError: false
       }
     };
-    this.editableUser = this.editableUser.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.editableSwitch = this.editableSwitch.bind(this);
   }
 
   editableUser() {
@@ -35,7 +32,7 @@ export class UserComponent extends React.Component {
     });
   }
 
-  onChangeHandler(e) {
+  onChangeHandler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     if (name === 'email') {
@@ -116,7 +113,7 @@ export class UserComponent extends React.Component {
     }
   }
 
-  editableSwitch(id, data) {
+  handleEditableSwitch = (id, data) => {
     const { editable, email, password } = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
     if (editable) {
@@ -138,9 +135,7 @@ export class UserComponent extends React.Component {
             <Button className="user__card__actions__button"
                     variant="contained"
                     color="primary"
-                    onClick={ () => {
-                      this.editableSwitch(_id, data);
-                    } }
+                    onClick={ () => this.handleEditableSwitch(_id, data) }
             >
               { editable ? 'Save' : 'Edit' }
             </Button>
