@@ -178,6 +178,7 @@ class LoginPage extends React.Component {
                 value={ login.email }
                 onChange={ this.onChangeHandler }
                 error={ login.emailIsError || !login.formIsValid }
+                autoComplete={'off'}
               />
               <TextField
                 fullWidth={ true }

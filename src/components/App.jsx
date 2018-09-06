@@ -5,10 +5,12 @@ import {
   Route
 }                            from 'react-router-dom';
 import { connect }           from 'react-redux';
+
 import NavBarComponent       from './nav-bar/Nav-bar.component';
 import LoginPage             from './login-page/Login-page.component';
 import { HomePageComponent } from './home-page/Home-page.component';
 import AdminPageComponent    from './admin-page/Admin-page.component';
+
 import {
   adminLoggedIn,
   updateSignIn,
@@ -19,10 +21,6 @@ import {
 }                            from '../redux/actions/app-actions';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.defaultLocation = this.defaultLocation.bind(this);
-  }
 
   componentDidMount() {
     this.defaultLocation();
