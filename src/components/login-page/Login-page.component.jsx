@@ -66,7 +66,6 @@ class LoginPage extends React.Component {
 
   loginValidation(userData) {
     api.loginValidation(userData)
-      .then(res => res.json())
       .then(data => {
         if (data.status === 'success') {
           this.successValidation();
@@ -78,9 +77,7 @@ class LoginPage extends React.Component {
 
   registrationValidation(userData) {
     api.registrationValidation(userData)
-      .then((res) => {
-        return res.json();
-      }).then(data => {
+      .then(data => {
       if (data.status === 'success') {
         this.successValidation();
       } else {

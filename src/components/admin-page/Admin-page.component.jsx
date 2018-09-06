@@ -58,9 +58,7 @@ class AdminPageComponent extends React.Component {
   }
 
   getUsers() {
-    api.getUsers().then((res) => {
-      return res.json();
-    }).then((data) => {
+    api.getUsers().then((data) => {
       this.isNextButtonEnable(data);
       this.props.updateDataActions(data);
     });
@@ -68,9 +66,7 @@ class AdminPageComponent extends React.Component {
 
   deleteUser(id, data) {
     const newData = data.filter((item) => item._id !== id);
-    api.deleteUser(id).then((res) => {
-      return res.json();
-    });
+    api.deleteUser(id);
     this.isNextButtonEnable(newData);
     this.props.deleteDataItemActions(newData);
   }
@@ -103,9 +99,7 @@ class AdminPageComponent extends React.Component {
       password: password
     };
     api.changeUserProps(userData, id)
-      .then((res) => {
-        return res.json();
-      }).then(data => {
+      .then(data => {
       if (data.status === 'success') {
         this.successValidation();
       } else {
