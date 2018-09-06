@@ -127,7 +127,8 @@ class AdminPageComponent extends React.Component {
   renderUsers(data, start, end) {
     return (
       data.map((user, i) => {
-        if (start <= i && i < end) {
+        const userRangeCheck = start <= i && i < end;
+        if (userRangeCheck) {
           return ( <li className="admin-page__user-list__item" key={ user._id }>
             <UserComponent
               data={ data }
