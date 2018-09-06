@@ -16,14 +16,14 @@ import { api, apiUrl } from '../api';
 import './Login-page.component.scss';
 
 import {
-  emailFailed,
-  emailSuccess,
-  formValidationFailed,
-  formValidationSuccess,
-  passwordFailed,
-  passwordSuccess,
-  updateEmail,
-  updatePassword
+	emailFailed,
+	emailSuccess,
+	formValidationFailed,
+	formValidationSuccess,
+	passwordFailed,
+	passwordSuccess,
+	updateEmail,
+	updatePassword
 } from '../../redux/actions/login-actions';
 
 class LoginPage extends React.Component {
@@ -248,4 +248,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps)(withRouter(LoginPage));
+  mapDispatchToProps)(withRouter(LoginPage)
+);

@@ -8,7 +8,7 @@ import TextField   from '@material-ui/core/TextField';
 
 import './User.component.scss';
 
-export class UserComponent extends React.Component {
+export class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,19 +68,19 @@ export class UserComponent extends React.Component {
             label="Email"
             placeholder="email"
             name="email"
-            onChange={ this.handleChangeValue.bind(this) }
             value={ this.state.email }
-            error={ emailIsError }
-            disabled={ isAdmin }/>
+						error={ emailIsError }
+						disabled={ isAdmin }
+						onChange={ this.handleChangeValue.bind(this) }/>
           <TextField
             fullWidth={ true }
             type="string"
             label="password:"
             placeholder="password"
             name="password"
-            onChange={ this.handleChangeValue.bind(this) }
             value={ this.state.password }
-            error={ passwordIsError }/>
+						error={ passwordIsError }
+						onChange={ this.handleChangeValue.bind(this) }/>
           <span className="user__card__content__id">User ID: { this.props._id }</span>
         </CardContent>
       );

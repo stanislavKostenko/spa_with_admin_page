@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class HomePageComponent extends React.Component {
+export class HomePage extends React.Component {
   render() {
     return (
       <div>

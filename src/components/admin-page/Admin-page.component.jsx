@@ -4,32 +4,32 @@ import PropTypes   from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 
-import { UserComponent } from './User/User.component';
-import { api }           from '../api';
+import { User } from './User/User.component';
+import { api }  from '../api';
 
 import './Admin-page.component.scss';
 
 import {
-  deleteDataItem,
-  nextButtonDisable,
-  nextButtonEnable,
-  prevButtonDisable,
-  prevButtonEnable,
-  updateData,
-  updateDataItem,
-  updateEndItem,
-  updateStartItem
+	deleteDataItem,
+	nextButtonDisable,
+	nextButtonEnable,
+	prevButtonDisable,
+	prevButtonEnable,
+	updateData,
+	updateDataItem,
+	updateEndItem,
+	updateStartItem
 } from '../../redux/actions/admin-actions';
 import {
-  formValidationFailed,
-  formValidationSuccess,
-  updateEmail,
-  updatePassword
+	formValidationFailed,
+	formValidationSuccess,
+	updateEmail,
+	updatePassword
 } from '../../redux/actions/login-actions';
 
 export const maxCountOfUsers = 4;
 
-class AdminPageComponent extends React.Component {
+class AdminPage extends React.Component {
   constructor(props) {
     super(props);
     this.isAdmin = this.props.isAdmin;
@@ -131,11 +131,11 @@ class AdminPageComponent extends React.Component {
         if (userRangeCheck) {
           return (
             <li className="admin-page__user-list__item" key={ user._id }>
-              <UserComponent
-                data={ data }
-                email={ user.email }
-                password={ user.password }
-                _id={ user._id }
+              <User
+								_id={ user._id }
+								data={ data }
+								email={ user.email }
+								password={ user.password }
                 onDeleteUser={ this.handleDeleteUser.bind(this) }
                 onUpdateUser={ this.handleUpdateUser.bind(this) }/>
             </li>
@@ -178,7 +178,7 @@ class AdminPageComponent extends React.Component {
   }
 }
 
-AdminPageComponent.propTypes = {
+AdminPage.propTypes = {
   isAdmin: PropTypes.bool.isRequired
 };
 
@@ -203,8 +203,7 @@ const mapDispatchToProps = dispatch => {
     prevButtonEnableActions: () => dispatch(prevButtonEnable()),
     updateStartItemActions: item => dispatch(updateStartItem(item)),
     updateEndItemActions: item => dispatch(updateEndItem(item)),
-
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminPageComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);

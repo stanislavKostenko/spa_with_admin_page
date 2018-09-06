@@ -1,14 +1,11 @@
-import * as React  from 'react';
-import {
-	HashRouter as Router,
-	Route
-}                  from 'react-router-dom';
-import { connect } from 'react-redux';
+import * as React                      from 'react';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import { connect }                     from 'react-redux';
 
-import NavBarComponent       from './nav-bar/Nav-bar.component';
-import LoginPage             from './login-page/Login-page.component';
-import { HomePageComponent } from './home-page/Home-page.component';
-import AdminPageComponent    from './admin-page/Admin-page.component';
+import NavBar       from './nav-bar/Nav-bar.component';
+import LoginPage    from './login-page/Login-page.component';
+import { HomePage } from './home-page/Home-page.component';
+import AdminPage    from './admin-page/Admin-page.component';
 
 import {
 	adminLoggedIn,
@@ -50,14 +47,14 @@ class App extends React.Component {
 		return (
 			<Router>
 				<div className="App">
-					<NavBarComponent
+					<NavBar
 						isLoggedIn={ app.isLoggedIn }
 						isAdmin={ app.isAdmin }
 						onLoggedOut={ userLoggedOutAction }
 						onUpdateSignIn={ updateSignInAction }
 						onUpdateSignUp={ updateSignUpAction }
 					/>
-					<Route exact={ true } path="/" component={ HomePageComponent }/>
+					<Route exact={ true } path="/" component={ HomePage }/>
 					<Route
 						path={ app.signIn ? '/login' : '/registration' }
 						render={ () =>
@@ -70,7 +67,7 @@ class App extends React.Component {
 							/> }
 					/>
 					<Route path={ '/settings' }
-								 render={ () => <AdminPageComponent isAdmin={ app.isAdmin }/> }/>
+								 render={ () => <AdminPage isAdmin={ app.isAdmin }/> }/>
 				</div>
 			</Router>
 		);
