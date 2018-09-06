@@ -1,11 +1,11 @@
 import * as React  from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes   from 'prop-types';
 
-import Button    from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 import { UserComponent } from './User/User.component';
-import { api } from '../api';
+import { api }           from '../api';
 
 import './Admin-page.component.scss';
 
@@ -48,32 +48,11 @@ class AdminPageComponent extends React.Component {
   }
 
   getUsers() {
-    api.getUsers().then((data) => {
+    api.getUsers().then(data => {
       this.isNextButtonEnable(data);
       this.props.updateDataActions(data);
     });
   }
-
-  handleDeleteUser(id, data) {
-    const newData = data.filter((item) => item._id !== id);
-    api.deleteUser(id);
-    this.isNextButtonEnable(newData);
-    this.props.deleteDataItemActions(newData);
-  };
-
-  handleUpdateUser(id, data, email, password, passwordIsError, emailIsError) {
-    const newData = data.map((user) => {
-      if (user._id === id) {
-        user.email = email;
-        user.password = password;
-      }
-      return user;
-    });
-    this.props.updateDataItemActions(newData);
-    if (!passwordIsError || !emailIsError) {
-      this.changeUserProps(email, password, id);
-    }
-  };
 
   successValidation() {
     let empty = '';
@@ -96,6 +75,27 @@ class AdminPageComponent extends React.Component {
         }
       });
   }
+
+  handleDeleteUser(id, data) {
+    const newData = data.filter(item => item._id !== id);
+    api.deleteUser(id);
+    this.isNextButtonEnable(newData);
+    this.props.deleteDataItemActions(newData);
+  };
+
+  handleUpdateUser(id, data, email, password, passwordIsError, emailIsError) {
+    const newData = data.map((user) => {
+      if (user._id === id) {
+        user.email = email;
+        user.password = password;
+      }
+      return user;
+    });
+    this.props.updateDataItemActions(newData);
+    if (!passwordIsError || !emailIsError) {
+      this.changeUserProps(email, password, id);
+    }
+  };
 
   handleNext(admin) {
     if (admin.startItem + maxCountOfUsers >= admin.data.length - maxCountOfUsers) {
@@ -136,8 +136,8 @@ class AdminPageComponent extends React.Component {
                 email={ user.email }
                 password={ user.password }
                 _id={ user._id }
-                deleteUser={ this.handleDeleteUser.bind(this) }
-                updateUser={ this.handleUpdateUser.bind(this) }/>
+                onDeleteUser={ this.handleDeleteUser.bind(this) }
+                onUpdateUser={ this.handleUpdateUser.bind(this) }/>
             </li>
           );
         }

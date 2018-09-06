@@ -32,23 +32,6 @@ export class UserComponent extends React.Component {
     });
   }
 
-  onChangeHandler(e) {
-    const name = e.target.name;
-    const value = e.target.value;
-    if (name === 'email') {
-      this.setState({
-        email: value
-      });
-    } else {
-      this.setState({
-        password: value
-      });
-    }
-
-    this.validateFields(name, value);
-  }
-
-
   validateFields(fieldName, value) {
     let emailIsValid;
     let passwordIsValid;
@@ -85,7 +68,7 @@ export class UserComponent extends React.Component {
             label="Email"
             placeholder="email"
             name="email"
-            onChange={ this.onChangeHandler.bind(this) }
+            onChange={ this.handleChangeValue.bind(this) }
             value={ this.state.email }
             error={ emailIsError }
             disabled={ isAdmin }/>
@@ -95,7 +78,7 @@ export class UserComponent extends React.Component {
             label="password:"
             placeholder="password"
             name="password"
-            onChange={ this.onChangeHandler.bind(this) }
+            onChange={ this.handleChangeValue.bind(this) }
             value={ this.state.password }
             error={ passwordIsError }/>
           <span className="user__card__content__id">User ID: { this.props._id }</span>
@@ -117,13 +100,29 @@ export class UserComponent extends React.Component {
     const { editable, email, password } = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
     if (editable) {
-      this.props.updateUser(id, data, email, password, passwordIsError, emailIsError);
+      this.props.onUpdateUser(id, data, email, password, passwordIsError, emailIsError);
     }
     this.editableUser();
   }
 
+  handleChangeValue(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    if (name === 'email') {
+      this.setState({
+        email: value
+      });
+    } else {
+      this.setState({
+        password: value
+      });
+    }
+
+    this.validateFields(name, value);
+  }
+
   render() {
-    const { email, _id, deleteUser, data } = this.props;
+    const { email, _id, data, onDeleteUser } = this.props;
     const { editable } = this.state;
     const { passwordIsError, emailIsError } = this.state.formsErrors;
     const isAdmin = 'admin9999@gmail.com' === email;
@@ -143,7 +142,7 @@ export class UserComponent extends React.Component {
                     variant="contained"
                     color="secondary"
                     disabled={ isAdmin }
-                    onClick={ () => deleteUser(_id, data) }
+                    onClick={ () => onDeleteUser(_id, data) }
             >
               Delete
             </Button>

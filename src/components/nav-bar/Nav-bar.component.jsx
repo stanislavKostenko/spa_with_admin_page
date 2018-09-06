@@ -1,11 +1,11 @@
-import * as React                from 'react';
-import { Link }                  from 'react-router-dom';
-import { connect }               from 'react-redux';
-import PropTypes                 from 'prop-types';
+import * as React  from 'react';
+import { Link }    from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes   from 'prop-types';
 
-import AppBar                    from '@material-ui/core/AppBar';
-import Toolbar                   from '@material-ui/core/es/Toolbar/Toolbar';
-import Button                    from '@material-ui/core/es/Button/Button';
+import AppBar  from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/es/Toolbar/Toolbar';
+import Button  from '@material-ui/core/es/Button/Button';
 
 import { formValidationSuccess } from '../../redux/actions/login-actions';
 import './Nav-bar.component.scss';
@@ -13,7 +13,7 @@ import './Nav-bar.component.scss';
 class NavBarComponent extends React.Component {
 
 
-   renderUserView(isAdmin) {
+  renderUserView(isAdmin) {
     if (isAdmin) {
       return (
         <Link to={ '/settings' } className="nav-bar__button">
@@ -23,10 +23,10 @@ class NavBarComponent extends React.Component {
     }
   }
 
-  renderLoginButton(isLoggedIn, updateSignIn, updateSignUp, loggedOut) {
+  renderLoginButton(isLoggedIn, onUpdateSignIn, onUpdateSignUp, onLoggedOut) {
     if (isLoggedIn) {
       return (
-        <div onClick={ () => loggedOut() } className="nav-bar__button_login">
+        <div onClick={ () => onLoggedOut() } className="nav-bar__button_login">
           <Link to={ '/' }>
             <Button color="inherit">Log out</Button>
           </Link>
@@ -36,21 +36,21 @@ class NavBarComponent extends React.Component {
       return (
         <div className="nav-bar__button_login">
           <Link
-            onClick={ () => {
-              updateSignIn();
-              this.props.formValidationSuccessActions();
-            } }
             className="nav-bar__button"
-            to={ '/login' }>
+            to={ '/login' }
+            onClick={ () => {
+              onUpdateSignIn();
+              this.props.formValidationSuccessActions();
+            } }>
             <Button color="inherit">Sign In</Button>
           </Link>
           <Link
-            onClick={ () => {
-              updateSignUp();
-              this.props.formValidationSuccessActions();
-            } }
             className="nav-bar__button"
-            to={ '/registration' }>
+            to={ '/registration' }
+            onClick={ () => {
+              onUpdateSignUp();
+              this.props.formValidationSuccessActions();
+            } }>
             <Button color="inherit">Sign Up</Button>
           </Link>
         </div>
@@ -60,11 +60,11 @@ class NavBarComponent extends React.Component {
 
   render() {
     const {
-      updateSignIn,
-      updateSignUp,
+      onUpdateSignIn,
+      onUpdateSignUp,
       isLoggedIn,
       isAdmin,
-      loggedOut
+      onLoggedOut
     } = this.props;
     return (
       <div className="nav-bar-wrapper">
@@ -76,9 +76,9 @@ class NavBarComponent extends React.Component {
             { this.renderUserView(isAdmin) }
             { this.renderLoginButton(
               isLoggedIn,
-              updateSignIn,
-              updateSignUp,
-              loggedOut) }
+              onUpdateSignIn,
+              onUpdateSignUp,
+              onLoggedOut) }
 
           </Toolbar>
         </AppBar>
@@ -90,9 +90,9 @@ class NavBarComponent extends React.Component {
 NavBarComponent.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   isLoggedIn: PropTypes.bool.isRequired,
-  updateSignIn: PropTypes.func.isRequired,
-  updateSignUp: PropTypes.func.isRequired,
-  loggedOut: PropTypes.func.isRequired
+  onUpdateSignIn: PropTypes.func.isRequired,
+  onUpdateSignUp: PropTypes.func.isRequired,
+  onLoggedOut: PropTypes.func.isRequired
 };
 
 const mapDispatchToProps = dispatch => {

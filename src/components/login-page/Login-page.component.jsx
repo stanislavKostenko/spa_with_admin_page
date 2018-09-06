@@ -1,7 +1,7 @@
-import * as React  from 'react';
+import * as React           from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect }          from 'react-redux';
-import PropTypes   from 'prop-types';
+import PropTypes            from 'prop-types';
 
 import Card        from '@material-ui/core/Card';
 import CardHeader  from '@material-ui/core/CardHeader';
@@ -12,7 +12,7 @@ import Button      from '@material-ui/core/Button';
 import IconButton  from '@material-ui/core/IconButton';
 import CloseIcon   from '@material-ui/icons/Close';
 
-import {api, apiUrl} from '../api';
+import { api, apiUrl } from '../api';
 import './Login-page.component.scss';
 
 import {
@@ -24,39 +24,14 @@ import {
   passwordSuccess,
   updateEmail,
   updatePassword
-}                  from '../../redux/actions/login-actions';
+} from '../../redux/actions/login-actions';
 
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-    this.updateRegistration = this.props.updateRegistration;
-    this.updateLogin = this.props.updateLogin;
-    this.updateAdmin = this.props.updateAdmin;
-  }
-
-  handleUserFields(event) {
-    const name = event.target.name;
-    const value = event.target.value;
-    if (name === 'email') {
-      this.props.updateEmailActions(value);
-    } else if (name === 'password') {
-      this.props.updatePasswordActions(value);
-    }
-    this.validateFields(name, value);
-  }
-
-  onChangeHandler(e) {
-    this.handleUserFields(e);
-  }
-
-  successValidation() {
-    let empty = '';
-    this.props.updateEmailActions(empty);
-    this.props.updatePasswordActions(empty);
-    this.updateLogin();
-    this.updateRegistration();
-    this.props.formValidationSuccessActions();
-    this.returnToMainPage();
+    this.onUpdateRegistration = this.props.onUpdateRegistration;
+    this.onUpdateLogin = this.props.onUpdateLogin;
+    this.onUpdateAdmin = this.props.onUpdateAdmin;
   }
 
   loginValidation(userData) {
@@ -73,24 +48,25 @@ class LoginPage extends React.Component {
   registrationValidation(userData) {
     api.registrationValidation(userData)
       .then(data => {
-      if (data.status === 'success') {
-        this.successValidation();
-      } else {
-        this.props.formValidationFailedActions();
-      }
-    });
+        if (data.status === 'success') {
+          this.successValidation();
+        } else {
+          this.props.formValidationFailedActions();
+        }
+      });
   }
 
-  keyPress(e) {
-    const isEnter = e.keyCode === 10 || e.keyCode === 13;
-    if (isEnter && this.props.signIn) {
-      this.onSubmitLogin();
-    } else if (isEnter) {
-      this.onSubmitRegistration();
-    }
+  successValidation() {
+    let empty = '';
+    this.props.updateEmailActions(empty);
+    this.props.updatePasswordActions(empty);
+    this.onUpdateLogin();
+    this.onUpdateRegistration();
+    this.props.formValidationSuccessActions();
+    this.returnToMainPage();
   }
 
-  onSubmitRegistration () {
+  registration() {
     const userData = {
       email: this.props.login.email,
       password: this.props.login.password
@@ -98,10 +74,10 @@ class LoginPage extends React.Component {
     this.registrationValidation(userData);
   }
 
-  onSubmitLogin() {
+  login() {
     if (this.props.login.email === 'admin9999@gmail.com' &&
-        this.props.login.password === 'admin9999') {
-      this.updateAdmin();
+      this.props.login.password === 'admin9999') {
+      this.onUpdateAdmin();
     }
     const userData = {
       email: this.props.login.email,
@@ -143,17 +119,41 @@ class LoginPage extends React.Component {
   labelGenerator(login, signUp) {
     if (signUp) {
       return login.formIsValid ? 'Email'
-                               : 'Account with this email already exists';
+        : 'Account with this email already exists';
     } else {
       return login.formIsValid ? 'Email' : 'Wrong email or password';
     }
   }
 
+  handleKeyPress(e) {
+    const isEnter = e.keyCode === 10 || e.keyCode === 13;
+    if (isEnter && this.props.signIn) {
+      this.login();
+    } else if (isEnter) {
+      this.registration();
+    }
+  }
+
+  handleUserFields(event) {
+    const name = event.target.name;
+    const value = event.target.value;
+    if (name === 'email') {
+      this.props.updateEmailActions(value);
+    } else if (name === 'password') {
+      this.props.updatePasswordActions(value);
+    }
+    this.validateFields(name, value);
+  }
+
+  handleChangeValue(e) {
+    this.handleUserFields(e);
+  }
+
   handleSubmit(signUp) {
     if (signUp) {
-      this.onSubmitRegistration();
+      this.registration();
     } else {
-      this.onSubmitLogin();
+      this.login();
     }
   }
 
@@ -178,16 +178,15 @@ class LoginPage extends React.Component {
             </Link>
           </div>
           <CardContent classes={ { root: 'login-page__card__content' } }>
-            <form action={apiUrl + '/api/users'} method="post">
+            <form action={ apiUrl + '/api/users' } method="post">
               <TextField
                 fullWidth={ true }
                 type="email"
                 label={ this.labelGenerator(login, signUp) }
                 name="email"
                 value={ login.email }
-                onChange={ this.onChangeHandler.bind(this) }
                 error={ login.emailIsError || !login.formIsValid }
-                autoComplete={'off'}
+                onChange={ this.handleChangeValue.bind(this) }
               />
               <TextField
                 fullWidth={ true }
@@ -196,20 +195,20 @@ class LoginPage extends React.Component {
                   ? 'A password should be more than 5 symbols' : 'Password' }
                 name="password"
                 value={ login.password }
-                onChange={ this.onChangeHandler.bind(this) }
                 error={ login.passwordIsError }
-                onKeyDown={ this.keyPress.bind(this) }
+                onChange={ this.handleChangeValue.bind(this) }
+                onKeyDown={ this.handleKeyPress.bind(this) }
               />
             </form>
           </CardContent>
           <CardActions classes={ { root: 'login-page__card__button-wrapper' } }>
             <Button
-              onClick={ this.handleSubmit.bind(this, signUp) }
               classes={ { root: 'login-page__card__submit' } }
               fullWidth={ true }
               variant="contained"
               disabled={ login.emailIsError || login.passwordIsError ||
               emptyString }
+              onClick={ this.handleSubmit.bind(this, signUp) }
             >
               { signIn ? 'Sign In' : 'Sign Up' }
             </Button>
@@ -223,9 +222,9 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
   signIn: PropTypes.bool.isRequired,
   signUp: PropTypes.bool.isRequired,
-  updateRegistration: PropTypes.func.isRequired,
-  updateLogin: PropTypes.func.isRequired,
-  updateAdmin: PropTypes.func.isRequired,
+  onUpdateRegistration: PropTypes.func.isRequired,
+  onUpdateLogin: PropTypes.func.isRequired,
+  onUpdateAdmin: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = store => {
