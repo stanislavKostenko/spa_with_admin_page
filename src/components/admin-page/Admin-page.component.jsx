@@ -1,10 +1,14 @@
 import * as React        from 'react';
-import { UserComponent } from './User/User.component';
-import './Admin-page.component.scss';
+import { connect }       from 'react-redux';
+
 import Button            from '@material-ui/core/Button';
 import PropTypes         from 'prop-types';
+
+import { UserComponent } from './User/User.component';
+import './Admin-page.component.scss';
+
 import { api }           from '../api';
-import { connect }       from 'react-redux';
+
 import {
   deleteDataItem,
   nextButtonDisable,
