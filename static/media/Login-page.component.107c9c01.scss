@@ -1,0 +1,73 @@
+.MuiFormLabel-root-70 {
+  font-size: 2rem;
+}
+
+
+.login-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.56);
+  overflow: hidden;
+  z-index: 50;
+
+  &__card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 1.5rem;
+    z-index: 100;
+
+    &__header-wrapper {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      justify-content: center;
+      padding-right: 1rem;
+    }
+
+    &__header {
+
+      &__title {
+        text-align: center;
+        font-size: 2rem;
+        text-transform: uppercase;
+      }
+
+      &__button {
+        margin-left: auto!important;
+      }
+    }
+
+    &__content {
+      div {
+        padding: 0.5rem 0;
+        position: relative;
+      }
+    }
+
+    &__button-wrapper {
+      margin-top: 1rem;
+      > a {
+        text-decoration: none;
+      }
+    }
+
+    &__submit {
+      background-color: #00AF50 !important;
+      color: #FFFFFF!important;
+    }
+  }
+
+
+}
